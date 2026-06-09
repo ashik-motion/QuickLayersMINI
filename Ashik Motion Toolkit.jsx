@@ -1,9 +1,13 @@
 /*
-    Ashik Motion Toolkit.jsx — v1.3.0
+    Ashik Motion Toolkit.jsx — v1.3.1
     ============================================================
     Dockable ScriptUI panel for Adobe After Effects (CC 2018+)
 
     Changelog (newest first):
+      v1.3.1 — 2026-06-10
+        · Fix: "preview.notify is undefined" crash on launch — panel onDraw
+               now uses a safe redrawGraph() fallback for all AE versions.
+
       v1.3.0 — 2026-06-09
         · Fix: Easing sets speed=0 (standard AE ease; removes cross-property
                unit artifacts). Speed slider removed — influence only.
@@ -30,7 +34,7 @@
 
 (function AshikMotionToolkit(thisObj) {
 
-    var VERSION     = "1.3.0";
+    var VERSION     = "1.3.1";
     var SCRIPT_NAME = "Ashik Motion Toolkit";
     var SETTINGS_NS = "AshikMotionToolkit";
     var PRESET_DIR  = Folder.userData.fullName + "/AshikMotion";
@@ -403,6 +407,15 @@
         var btnExport = ioGrp.add("button", undefined, "Export JSON…");
         var btnImport = ioGrp.add("button", undefined, "Import JSON…");
 
+        // notify() is absent on panel elements in some AE versions — call onDraw directly as fallback
+        function redrawGraph() {
+            if (typeof preview.notify === 'function') {
+                redrawGraph();
+            } else if (typeof preview.onDraw === 'function') {
+                preview.onDraw();
+            }
+        }
+
         // ── Wiring ───────────────────────────────────────────────────────────
         function refreshInfo() {
             var c = getActiveComp(), l = getSelectedLayer();
@@ -439,7 +452,7 @@
             var v = Math.round(this.value);
             stInfluence.text = String(v);
             saveSetting("influence", v);
-            preview.notify("onDraw");
+            redrawGraph();
         };
         btnEaseOut.onClick = function() {
             alert(applyEaseToSelection('out',   Math.round(sInfluence.value)) + " key(s) eased OUT.");
@@ -510,9 +523,9 @@
         };
 
         // Init
-        reloadDropdown(); refreshInfo(); preview.notify("onDraw");
+        reloadDropdown(); refreshInfo(); redrawGraph();
         pal.layout.layout(true);
-        pal.onResize = function() { this.layout.resize(); preview.notify("onDraw"); };
+        pal.onResize = function() { this.layout.resize(); redrawGraph(); };
         return pal;
     }
 
