@@ -1,45 +1,34 @@
 /*
-    Ashik Motion Toolkit.jsx — v1.3.2
+    AshikMotion-QLmini.jsx — v1.1.0
     ============================================================
     Dockable ScriptUI panel for Adobe After Effects (CC 2018+)
 
     Changelog (newest first):
-      v1.3.2 — 2026-06-10
-        · Fix: "undefined is not an object" crash at line 333 — onDraw now
-               guards against null size/graphics before the panel is laid out.
+      v1.1.0 — 2026-06-10
+        · Renamed to AshikMotion-QLmini
+        · Fix: onDraw guards against null size/graphics before layout
+        · Fix: panel.notify() fallback for all AE versions
+        · Fix: Easing sets speed=0 (standard AE ease)
+        · Fix: Preset apply no longer duplicates sub-groups inside effects
+        · Fix: Preset capture saves keyframe data and expressions
+        · Fix: Clipboard copy uses temp-file pipe on all platforms
+        · New: Influence value persists across AE sessions (app.settings)
+        · New: Graph colors adapt to AE light/dark theme
 
-      v1.3.1 — 2026-06-10
-        · Fix: "preview.notify is undefined" crash on launch — panel onDraw
-               now uses a safe redrawGraph() fallback for all AE versions.
-
-      v1.3.0 — 2026-06-09
-        · Fix: Easing sets speed=0 (standard AE ease; removes cross-property
-               unit artifacts). Speed slider removed — influence only.
-        · Fix: Preset apply no longer duplicates sub-groups inside effects.
-        · Fix: Preset capture now stores keyframe data and expressions.
-        · Fix: Clipboard copy uses temp-file pipe on all platforms (handles
-               special chars, quotes, and newlines correctly).
-        · New: Influence value persists across AE sessions (app.settings).
-        · New: Speed graph colors adapt to AE light/dark theme.
-        · Refactor: VERSION constant; logic extracted outside buildUI.
-
-      v1.2
-        · Added Ease In & Ease In-Out
-        · Speed Graph grid + axis ticks + labels
-        · Preset Export / Import (JSON)
-
-      v1.0
-        · Initial release
+      v1.0.0 — initial release
+        · Layer Info tab (comp details, effects, keyframes, copy to clipboard)
+        · Easing tab (influence slider, live value graph, Ease Out/In/In-Out)
+        · Presets tab (save/apply/rename/duplicate/delete, export/import JSON)
 
     Install:
       1) Copy to:  <AE install>/Scripts/ScriptUI Panels/
-      2) Restart AE → Window ▸ Ashik Motion Toolkit
+      2) Restart AE → Window ▸ AshikMotion QLmini
 */
 
-(function AshikMotionToolkit(thisObj) {
+(function AshikMotionQLmini(thisObj) {
 
-    var VERSION     = "1.3.2";
-    var SCRIPT_NAME = "Ashik Motion Toolkit";
+    var VERSION     = "1.1.0";
+    var SCRIPT_NAME = "AshikMotion QLmini";
     var SETTINGS_NS = "AshikMotionToolkit";
     var PRESET_DIR  = Folder.userData.fullName + "/AshikMotion";
     var PRESET_FILE = PRESET_DIR + "/presets.json";
