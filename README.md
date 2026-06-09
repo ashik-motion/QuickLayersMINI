@@ -47,10 +47,15 @@ Applies effects to all selected layers (adds if not already present):
 | Un-precompose | Extracts all layers from a pre-comp back into the main comp |
 
 ### Expression
-| Button | Action |
-|--------|--------|
-| Wiggle | Applies `wiggle(2, 20)` to Position on selected layers |
-| Loop | Applies `loopOut("cycle")` to all animated properties with ≥ 2 keyframes |
+| Button | What it applies |
+|--------|----------------|
+| Wiggle | `wiggle(2, 20)` → Position |
+| Loop | `loopOut("cycle")` → all animated properties (≥ 2 keyframes) |
+| Time | `time * 90` → Rotation (continuous auto-spin) |
+| Random | `random(50, 100)` → Opacity (flicker) |
+| Auto Fade | Fade in/out over 15 frames at layer in/out points → Opacity |
+| Motion Trail | Position delay + opacity falloff by layer index → Position & Opacity |
+| Blink | Toggle Opacity 100/0 every 0.5 seconds → Opacity |
 
 ### Project
 | Button | Action |
@@ -74,7 +79,7 @@ Applies effects to all selected layers (adds if not already present):
 
 ## Install
 
-1. Download `AshikMotion-QLmini -v1.2.0.jsx`
+1. Download `AshikMotion-QLmini -v1.3.0.jsx`
 2. Copy it to your After Effects ScriptUI Panels folder:
 
    | Platform | Path |
@@ -83,7 +88,7 @@ Applies effects to all selected layers (adds if not already present):
    | **Windows** | `C:\Program Files\Adobe\Adobe After Effects <version>\Support Files\Scripts\ScriptUI Panels\` |
 
 3. Restart After Effects
-4. Go to **Window** menu → click **AshikMotion-QLmini -v1.2.0**
+4. Go to **Window** menu → click **AshikMotion-QLmini -v1.3.0**
 
 The panel docks anywhere in your AE workspace.
 
@@ -93,7 +98,8 @@ The panel docks anywhere in your AE workspace.
 
 | Version | Changes |
 |---------|---------|
-| **v1.2.0** | Added Label Color, Time Remap, Trim to Work Area (Layer section). Added Gaussian Blur (FX section). Added Expression section (Wiggle, Loop). Added Import Footage, New Comp from Selection, Clean Project (Project section). |
+| **v1.3.0** | Added Auto Fade, Motion Trail, Blink, Time, Random to Expression section. |
+| v1.2.0 | Added Label Color, Time Remap, Trim to Work Area (Layer). Gaussian Blur (FX). Expression section with Wiggle & Loop. Import Footage, New Comp from Selection, Clean Project (Project). |
 | v1.1.0 | Fixed Un-precompose (now uses Copy/Paste approach). |
 | v1.0.9 | Removed broken scrollbar, simplified UI structure. |
 | v1.0.8 | Separated Pre-compose and Un-precompose into two buttons. |
