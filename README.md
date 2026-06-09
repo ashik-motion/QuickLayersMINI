@@ -1,42 +1,80 @@
-# Ashik Motion Toolkit
+# QuickLayers MINI
 
-A dockable ScriptUI panel for **Adobe After Effects (CC 2018+)** with layer info, easing controls, and a preset library.
+A lightweight, dockable ScriptUI panel for **Adobe After Effects (CC 2018+)** with accordion-style sections for fast layer creation, FX, layer tools, expressions, project management, and cache purging — all in one compact panel.
 
 ---
 
 ## Features
 
-### Layer Info
-- Shows comp name, FPS, and duration
-- Shows selected layer name, index, in/out points
-- Lists all applied effects with match names
-- Shows total keyframe count across all properties
-- **Copy Info** button — copies everything to clipboard
+### QL Mini — Layer Creation
+| Button | Action |
+|--------|--------|
+| Solid | Creates a white Solid with Fill effect |
+| Text | Creates a Text layer centered in comp |
+| Adjustment | Creates an Adjustment layer |
+| Null | Creates a Null object |
+| Shape | Creates a Shape layer |
+| Camera | Creates a Camera |
+| Light | Creates a Light |
 
-### Easing
-- **Influence slider** — controls the ease curve shape (0–100, default 66)
-- **Live Value Graph** — shows the ease in-out S-curve preview as you drag the slider
-- Three apply buttons:
-  - **Ease Out** — slow start, accelerates out of the keyframe
-  - **Ease In** — decelerates into the keyframe, arrives at rest
-  - **Ease In-Out** — smooth S-curve, rest at both ends
-- Works on all selected keyframes across all selected properties
-- Speed is always set to `0` (standard AE ease — no cross-property artifacts)
-- Last used influence value **persists** across AE sessions
+### FX
+Applies effects to all selected layers (adds if not already present):
 
-### Preset Library
-- **Save from Layer** — captures all effects (values, keyframes, expressions) from the selected layer
-- **Apply** — applies a saved preset to the selected layer
-- **Rename / Duplicate / Delete** presets
-- **Export JSON** — save your entire preset library to a `.json` file
-- **Import JSON** — merge presets from a `.json` file into your library
-- Presets stored at: `<user>/AshikMotion/presets.json`
+| Button | Effect |
+|--------|--------|
+| Fill | ADBE Fill |
+| Tint | ADBE Tint |
+| Gradient Ramp | ADBE Ramp |
+| Gaussian Blur | ADBE Gaussian Blur 2 |
+| Noise | ADBE Noise |
+| Lumetri Color | ADBE Lumetri Color |
+| Drop Shadow | ADBE Drop Shadow |
+| Glow | ADBE Glow |
+
+### Layer — Tools & Utilities
+| Button | Action |
+|--------|--------|
+| Duplicate | Duplicates selected layers with auto-incremented names |
+| Reverse Order | Reverses the stacking order of selected layers |
+| Easy Ease All | Applies Easy Ease to all keyframes on selected layers |
+| Fit to Comp | Scales layer to fill the comp (cover mode) |
+| Flip H / Flip V | Flips layer scale horizontally or vertically |
+| Center Anchor | Centers the anchor point while keeping visual position |
+| Label Color | Opens a dropdown to set label color on selected layers (17 colors) |
+| Time Remap | Enables Time Remapping on selected layers |
+| Trim to Work Area | Trims selected layers' in/out points to the comp Work Area |
+| Pre-compose | Pre-composes selected layers with a custom name dialog (auto-numbered default) |
+| Un-precompose | Extracts all layers from a pre-comp back into the main comp |
+
+### Expression
+| Button | Action |
+|--------|--------|
+| Wiggle | Applies `wiggle(2, 20)` to Position on selected layers |
+| Loop | Applies `loopOut("cycle")` to all animated properties with ≥ 2 keyframes |
+
+### Project
+| Button | Action |
+|--------|--------|
+| Import Footage | Opens a multi-file import dialog |
+| New Comp from Selection | Creates a new comp from footage selected in the Project panel |
+| Snapshot | Adds current frame to Render Queue as a PNG |
+| Render Queue | Adds active comp to the Render Queue |
+| Export H.264 | Adds comp to Render Queue with H.264 template |
+| Export Alpha | Adds comp to Render Queue with PNG Sequence + Alpha |
+| Collect Files | Runs File > Dependencies > Collect Files |
+| Find Missing | Lists all missing footage items |
+| Clean Project | Removes unused footage from the project |
+
+### Purge
+| Button | Action |
+|--------|--------|
+| Purge Cache | Opens the Purge Memory & Disk Cache dialog |
 
 ---
 
 ## Install
 
-1. Download `Ashik Motion Toolkit.jsx`
+1. Download `AshikMotion-QLmini -v1.2.0.jsx`
 2. Copy it to your After Effects ScriptUI Panels folder:
 
    | Platform | Path |
@@ -45,42 +83,9 @@ A dockable ScriptUI panel for **Adobe After Effects (CC 2018+)** with layer info
    | **Windows** | `C:\Program Files\Adobe\Adobe After Effects <version>\Support Files\Scripts\ScriptUI Panels\` |
 
 3. Restart After Effects
-4. Go to **Window** menu → click **Ashik Motion Toolkit**
+4. Go to **Window** menu → click **AshikMotion-QLmini -v1.2.0**
 
-The panel will open as a floating palette. You can dock it anywhere in your AE workspace by dragging the panel header.
-
----
-
-## How to Use
-
-### Layer Info tab
-1. Open a composition and select a layer
-2. Click **Refresh** (or switch to this tab)
-3. Layer details appear in the text box
-4. Click **Copy Info** to copy the details to your clipboard
-
-### Easing tab
-1. Select one or more keyframes in the timeline (expand the property and click the keyframe diamonds)
-2. Adjust the **Influence** slider — watch the graph update live
-3. Click **Ease Out**, **Ease In**, or **Ease In-Out**
-4. An alert confirms how many keyframes were updated
-
-> **Tip:** Select keyframes on multiple properties at once — the ease applies to all of them in one click.
-
-### Presets tab
-**To save a preset:**
-1. Select a layer that has effects applied
-2. Click **Save from Layer**
-3. Enter a name → click OK
-
-**To apply a preset:**
-1. Select a layer in your comp
-2. Choose a preset from the dropdown
-3. Click **Apply**
-
-**To export/import:**
-- **Export JSON** — saves your full preset library to a file (great for backups or sharing)
-- **Import JSON** — merges presets from a file into your current library
+The panel docks anywhere in your AE workspace.
 
 ---
 
@@ -88,9 +93,12 @@ The panel will open as a floating palette. You can dock it anywhere in your AE w
 
 | Version | Changes |
 |---------|---------|
-| **v1.3.0** | Fix: easing speed=0 (standard AE ease). Fix: preset apply no longer duplicates sub-groups. Fix: preset capture now saves keyframes and expressions. Fix: clipboard handles special characters. New: influence persists across sessions. New: graph adapts to AE light/dark theme. |
-| v1.2 | Added Ease In & Ease In-Out. Speed graph with grid, ticks, labels. Preset export/import (JSON). |
-| v1.0 | Initial release. |
+| **v1.2.0** | Added Label Color, Time Remap, Trim to Work Area (Layer section). Added Gaussian Blur (FX section). Added Expression section (Wiggle, Loop). Added Import Footage, New Comp from Selection, Clean Project (Project section). |
+| v1.1.0 | Fixed Un-precompose (now uses Copy/Paste approach). |
+| v1.0.9 | Removed broken scrollbar, simplified UI structure. |
+| v1.0.8 | Separated Pre-compose and Un-precompose into two buttons. |
+| v1.0.7 | Merged Layer and Utilities sections. |
+| v1.0.0 | Initial release — accordion UI, layer creation, FX, layer tools, project tools, purge. |
 
 ---
 
