@@ -1,12 +1,14 @@
 // QuickLayers MINI
-// Version: 1.2.0
-// Layer creators + FX tools + Utilities + Project tools + Animation tools
+// Version: 1.3.0
+// Layer creators + FX tools + Utilities + Project tools + Expression tools
 // Author: Ashik
 //
 // Changelog:
+// v1.3.0 - Added Auto Fade, Motion Trail, Blink to Expression section
+//        - Added Time (auto-spin), Random (flicker) to Expression section
 // v1.2.0 - Added Label Color, Time Remap, Trim to Work Area (Layer section)
 //        - Added Gaussian Blur (FX section)
-//        - Added Animation section: Wiggle, Loop, Bounce expressions + Hold Keyframes
+//        - Added Expression section: Wiggle, Loop
 //        - Added Import Footage, New Comp from Selection, Clean Project (Project section)
 // v1.1.0 - Fixed Un-precompose function (now uses Copy/Paste approach)
 // v1.0.9 - Removed complex scrollbar (wasn't working), simplified UI structure
@@ -628,7 +630,7 @@ function openPurge(){
 
 // ---------- UI ----------
 function buildUI(thisObj){
-    var win=(thisObj instanceof Panel)?thisObj:new Window('palette','QuickLayersMINI-v1.2.0',undefined,{resizeable:true});
+    var win=(thisObj instanceof Panel)?thisObj:new Window('palette','QuickLayersMINI-v1.3.0',undefined,{resizeable:true});
 
     var root = win.add('group');
     root.orientation='column';
