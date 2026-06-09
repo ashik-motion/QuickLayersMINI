@@ -397,6 +397,58 @@ function applyRandomExpression(){
     app.endUndoGroup();
 }
 
+// Automatic Fade: fade in at layer start, fade out at layer end (15 frames)
+function applyAutoFade(){
+    var sel = getSelection(); if(!sel) return;
+    app.beginUndoGroup("QL: Auto Fade");
+    var expr = [
+        'fadeFrames = 15;',
+        'fadeIn  = thisComp.frameDuration * fadeFrames;',
+        'fadeOut = thisComp.frameDuration * fadeFrames;',
+        'if (time < inPoint + fadeIn)',
+        '    linear(time, inPoint, inPoint + fadeIn, 0, 100);',
+        'else if (time > outPoint - fadeOut)',
+        '    linear(time, outPoint - fadeOut, outPoint, 100, 0);',
+        'else',
+        '    100;'
+    ].join('\n');
+    for(var i = 0; i < sel.length; i++){
+        try{ sel[i].property("Opacity").expression = expr; }catch(e){}
+    }
+    app.endUndoGroup();
+}
+
+// Motion Trail: position delay + opacity falloff based on layer index
+function applyMotionTrail(){
+    var sel = getSelection(); if(!sel) return;
+    app.beginUndoGroup("QL: Motion Trail");
+    var posExpr = [
+        'delay = 5;',
+        'd = delay * thisComp.frameDuration * (index - 1);',
+        'thisComp.layer(1).position.valueAtTime(time - d);'
+    ].join('\n');
+    var opExpr = [
+        'opacityFactor = .75;',
+        'Math.pow(opacityFactor, index - 1) * 100;'
+    ].join('\n');
+    for(var i = 0; i < sel.length; i++){
+        try{ sel[i].property("Position").expression = posExpr; }catch(e){}
+        try{ sel[i].property("Opacity").expression = opExpr; }catch(e){}
+    }
+    app.endUndoGroup();
+}
+
+// Blink: toggles opacity on/off every 0.5 seconds
+function applyBlinkExpression(){
+    var sel = getSelection(); if(!sel) return;
+    app.beginUndoGroup("QL: Blink Expression");
+    var expr = 'Math.floor(time * 2) % 2 === 0 ? 100 : 0;';
+    for(var i = 0; i < sel.length; i++){
+        try{ sel[i].property("Opacity").expression = expr; }catch(e){}
+    }
+    app.endUndoGroup();
+}
+
 // ---------- FX ----------
 function addDropShadow(){ applyEffectToSelection(["ADBE Drop Shadow"], "Drop Shadow"); }
 function addGlow(){ applyEffectToSelection(["ADBE Glo2", "ADBE Glow"], "Glow"); }
@@ -756,6 +808,9 @@ function buildUI(thisObj){
         makeBtn(content, "Loop", "Apply loopOut(cycle) to all animated properties", applyLoopExpression);
         makeBtn(content, "Time", "Apply time*90 to Rotation (auto-spin 90deg/sec)", applyTimeExpression);
         makeBtn(content, "Random", "Apply random(50,100) to Opacity (flicker)", applyRandomExpression);
+        makeBtn(content, "Auto Fade", "Fade in/out over 15 frames at layer in/out points", applyAutoFade);
+        makeBtn(content, "Motion Trail", "Position delay + opacity falloff based on layer index", applyMotionTrail);
+        makeBtn(content, "Blink", "Toggle Opacity on/off every 0.5 seconds", applyBlinkExpression);
     });
 
     // ========== SECTION: Project ==========
