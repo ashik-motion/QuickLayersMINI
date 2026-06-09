@@ -852,7 +852,6 @@ function buildUI(thisObj){
         makeBtn(content, "Export Alpha", "Export PNG Sequence with Alpha (no background)", exportAlpha);
         makeBtn(content, "Collect Files", "Collect Files", collectFiles);
         makeBtn(content, "Find Missing", "Find Missing Footage", findMissingFootage);
-        makeBtn(content, "Audio Panel", "Open Audio Waveform Panel", openAudioPanel);
     });
     
     // ========== SECTION: Purge ==========
