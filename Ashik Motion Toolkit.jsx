@@ -1,9 +1,13 @@
 /*
-    Ashik Motion Toolkit.jsx — v1.3.1
+    Ashik Motion Toolkit.jsx — v1.3.2
     ============================================================
     Dockable ScriptUI panel for Adobe After Effects (CC 2018+)
 
     Changelog (newest first):
+      v1.3.2 — 2026-06-10
+        · Fix: "undefined is not an object" crash at line 333 — onDraw now
+               guards against null size/graphics before the panel is laid out.
+
       v1.3.1 — 2026-06-10
         · Fix: "preview.notify is undefined" crash on launch — panel onDraw
                now uses a safe redrawGraph() fallback for all AE versions.
@@ -34,7 +38,7 @@
 
 (function AshikMotionToolkit(thisObj) {
 
-    var VERSION     = "1.3.1";
+    var VERSION     = "1.3.2";
     var SCRIPT_NAME = "Ashik Motion Toolkit";
     var SETTINGS_NS = "AshikMotionToolkit";
     var PRESET_DIR  = Folder.userData.fullName + "/AshikMotion";
@@ -330,7 +334,10 @@
         var preview = tabEase.add("panel", undefined, "Value Graph (Ease In-Out)");
         preview.preferredSize.height = 160;
         preview.onDraw = function() {
-            var g = this.graphics, w = this.size[0], h = this.size[1];
+            var g = this.graphics;
+            if (!g || !this.size) return;
+            var w = this.size[0], h = this.size[1];
+            if (!w || !h) return;
             var pad = 18, x0 = pad, x1 = w - pad, y0 = h - pad, y1 = pad;
 
             g.brush = g.newBrush(g.BrushType.SOLID_COLOR, gc.bg);
