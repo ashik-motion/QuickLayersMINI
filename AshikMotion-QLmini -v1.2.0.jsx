@@ -377,6 +377,26 @@ function applyLoopToProps(layer){
 }
 
 
+// Time expression: continuous auto-spin on Rotation (time * 90 = 90 degrees per second)
+function applyTimeExpression(){
+    var sel = getSelection(); if(!sel) return;
+    app.beginUndoGroup("QL: Time Expression");
+    for(var i = 0; i < sel.length; i++){
+        try{ sel[i].property("Rotation").expression = "time * 90"; }catch(e){}
+    }
+    app.endUndoGroup();
+}
+
+// Random expression: random opacity flicker between 50–100
+function applyRandomExpression(){
+    var sel = getSelection(); if(!sel) return;
+    app.beginUndoGroup("QL: Random Expression");
+    for(var i = 0; i < sel.length; i++){
+        try{ sel[i].property("Opacity").expression = "random(50, 100)"; }catch(e){}
+    }
+    app.endUndoGroup();
+}
+
 // ---------- FX ----------
 function addDropShadow(){ applyEffectToSelection(["ADBE Drop Shadow"], "Drop Shadow"); }
 function addGlow(){ applyEffectToSelection(["ADBE Glo2", "ADBE Glow"], "Glow"); }
@@ -734,6 +754,8 @@ function buildUI(thisObj){
     createSection('Expression', function(content){
         makeBtn(content, "Wiggle", "Apply wiggle(2,20) expression to Position", applyWiggleExpression);
         makeBtn(content, "Loop", "Apply loopOut(cycle) to all animated properties", applyLoopExpression);
+        makeBtn(content, "Time", "Apply time*90 to Rotation (auto-spin 90deg/sec)", applyTimeExpression);
+        makeBtn(content, "Random", "Apply random(50,100) to Opacity (flicker)", applyRandomExpression);
     });
 
     // ========== SECTION: Project ==========
