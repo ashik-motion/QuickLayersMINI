@@ -1,7 +1,8 @@
 // QuickLayers MINI
 // Version: 1.3.0
-// Layer creators + FX tools + Utilities + Project tools + Expression tools
-// Author: Ashik
+// A compact ScriptUI panel for Adobe After Effects with accordion sections:
+// Layer creation, FX, Layer tools, Expressions, Project management, and Purge.
+// Author: Ashik | AshikMotion
 //
 // Changelog:
 // v1.3.0 - Added Auto Fade, Motion Trail, Blink to Expression section
@@ -831,6 +832,26 @@ function buildUI(thisObj){
     // ========== SECTION: Purge ==========
     createSection('Purge', function(content){
         makeBtn(content, 'Purge Cache', "Open Purge / Media & Disk Cache", openPurge);
+    });
+
+    // ========== SECTION: About ==========
+    createSection('About', function(content){
+        var info = [
+            'QuickLayers MINI',
+            'Version: 1.3.0',
+            '',
+            'A compact dockable panel for After',
+            'Effects with accordion sections for',
+            'layer creation, FX, layer tools,',
+            'expressions, and project tools.',
+            '',
+            'Author: Ashik | AshikMotion',
+            'github.com/ashik-motion'
+        ].join('\n');
+
+        var txt = content.add('statictext', undefined, info, {multiline: true});
+        txt.alignment = ['fill', 'top'];
+        txt.characters = 28;
     });
 
     if(sections.length > 0) toggleSection(sections[0]);
