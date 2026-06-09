@@ -376,61 +376,6 @@ function applyLoopToProps(layer){
     processGroup(layer);
 }
 
-// Bounce expression on Position
-function applyBounceExpression(){
-    var sel = getSelection(); if(!sel) return;
-    app.beginUndoGroup("QL: Bounce Expression");
-    var bounceExpr = [
-        'n = 0;',
-        'if (numKeys > 0){',
-        '  n = nearestKey(time).index;',
-        '  if (nearestKey(time).time > time){ n--; }',
-        '}',
-        'if (n == 0){ t = 0; } else { t = time - key(n).time; }',
-        'if (n > 0 && n < numKeys){',
-        '  v = velocityAtTime(key(n).time - thisComp.frameDuration/10);',
-        '  amp = .06; freq = 2.0; decay = 8.0;',
-        '  value + v*amp*Math.sin(freq*t*2*Math.PI)/Math.exp(decay*t);',
-        '} else { value; }'
-    ].join('\n');
-    for(var i = 0; i < sel.length; i++){
-        try{ sel[i].property("Position").expression = bounceExpr; }catch(e){}
-    }
-    app.endUndoGroup();
-}
-
-// Hold Keyframes: convert all keyframes on selected layers to hold interpolation
-function convertToHoldKeyframes(){
-    var sel = getSelection(); if(!sel) return;
-    app.beginUndoGroup("QL: Hold Keyframes");
-    for(var i = 0; i < sel.length; i++) applyHoldToProps(sel[i]);
-    app.endUndoGroup();
-}
-
-function applyHoldToProps(layer){
-    function processGroup(propGroup){
-        if(!propGroup) return;
-        for(var i = 1; i <= propGroup.numProperties; i++){
-            var prop = propGroup.property(i);
-            try{
-                if(prop.propertyType === PropertyType.PROPERTY){
-                    if(prop.numKeys > 0 && prop.canVaryOverTime){
-                        for(var k = 1; k <= prop.numKeys; k++){
-                            try{
-                                prop.setInterpolationTypeAtKey(k,
-                                    KeyframeInterpolationType.HOLD,
-                                    KeyframeInterpolationType.HOLD);
-                            }catch(e){}
-                        }
-                    }
-                } else if(prop.propertyType === PropertyType.INDEXED_GROUP || prop.propertyType === PropertyType.NAMED_GROUP){
-                    processGroup(prop);
-                }
-            }catch(e){}
-        }
-    }
-    processGroup(layer);
-}
 
 // ---------- FX ----------
 function addDropShadow(){ applyEffectToSelection(["ADBE Drop Shadow"], "Drop Shadow"); }
@@ -785,12 +730,10 @@ function buildUI(thisObj){
         makeBtn(content, 'Un-precompose', "Extract layers from pre-comp back to main comp", unPrecomposeSelected);
     });
 
-    // ========== SECTION: Animation ==========
-    createSection('Animation', function(content){
+    // ========== SECTION: Expression ==========
+    createSection('Expression', function(content){
         makeBtn(content, "Wiggle", "Apply wiggle(2,20) expression to Position", applyWiggleExpression);
         makeBtn(content, "Loop", "Apply loopOut(cycle) to all animated properties", applyLoopExpression);
-        makeBtn(content, "Bounce", "Apply bounce expression to Position", applyBounceExpression);
-        makeBtn(content, "Hold Keyframes", "Convert all keyframes to Hold interpolation", convertToHoldKeyframes);
     });
 
     // ========== SECTION: Project ==========
